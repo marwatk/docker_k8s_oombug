@@ -1,0 +1,38 @@
+# Vi
+*~
+.*.swp
+
+# Eclipse
+/*/.project
+/*/.classpath
+/*/.settings
+/*/target
+/target
+/.project
+/.settings
+/build
+/*/build
+.factorypath
+/*/.factorypath
+
+# Maven release plugin
+/pom.xml.releaseBackup
+/release.properties
+
+# Jrebel
+/src/main/resources/rebel.xml
+
+# WinMerge
+*.bak
+
+/*/etc
+/portal-cas/run.bat
+/portal-cas/run.sh
+/*/logs
+.classpath
+
+.checkstyle
+/*/.checkstyle
+
+storage/*
+!storage/.placeholder

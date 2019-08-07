@@ -1,0 +1,66 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    name: oombug-pv
+    type: local
+  name: oombug-pv
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 5Gi
+  hostPath:
+    path: /var/lib/docker/oombug-pv
+    type: DirectoryOrCreate
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: hostpath
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: oombug-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  selector:
+    matchLabels:
+      name: oombug-pv
+  storageClassName: hostpath
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oombug
+  labels:
+    app: oombug
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oombug
+  template:
+    metadata:
+      labels:
+        app: oombug
+    spec:
+      containers:
+      - name: oombug
+        imagePullPolicy: Never
+        image: oombug
+        resources:
+          requests:
+            memory: 300M
+          limits:
+            memory: 300M
+        volumeMounts:
+        - mountPath: /var/oombug
+          name: oombug-pv
+      volumes:
+      - name: oombug-pv
+        persistentVolumeClaim:
+          claimName: oombug-pvc
